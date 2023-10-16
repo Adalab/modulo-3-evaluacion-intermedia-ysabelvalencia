@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import callToApi from '../services/api';
-import localStorage from '../services/localStorage';
 import '../styles/App.scss';
 // import nombreVariable from '../images/nombre-imagen';
 
@@ -9,6 +7,8 @@ import '../styles/App.scss';
 function App() {
 
   const [allCountries, setAllCountries] = useState([]);
+  const [inputSearch, setInputSearch] = useState("");
+  const [selectSearch, setSelectSearch] = useState("");
 
   useEffect(()=> {
     fetch ("https://restcountries.com/v3.1/all?fields=name,capital,flag,continents")
@@ -20,9 +20,12 @@ function App() {
       });
 
   }, []);
-
+  
   const renderAllCountries = () => {
     return allCountries
+    .filter ((eachCountry)=>
+    eachCountry.name.official.toLowerCase().includes(inputSearch.toLowerCase()))
+  
     .map((eachCountry, i) =>
      (<li key={i}>
     
@@ -35,6 +38,19 @@ function App() {
 
   }
 
+  const handleForm = (ev) => {
+    ev.preventDefault()
+  }
+
+  const handleInputSearch = (ev) => {
+    setInputSearch(ev.target.value)
+
+  }
+  const handleSelectSearch = (ev) => {
+    setSelectSearch(ev.target.value);
+  };
+
+
 
   return (
   <>
@@ -44,13 +60,22 @@ function App() {
   </header>
   <main>
     <section>
-      <form>
+      <form onSubmit={handleForm}>
         <h2>Filters</h2>
         <div>
           <p>By country</p>
-          <input type="text" />
+          <input 
+          type='search'
+          name='country'
+          value={inputSearch}
+          id='country'
+          onChange={handleInputSearch} 
+          />
           <p>By Continent</p>
-          <select name="" id="">
+          <select 
+          name="select" 
+          id="select"
+          >
           <option value="All">All</option>
           <option value="Africa">Africa</option>
           <option value="Asia">Asia</option>
