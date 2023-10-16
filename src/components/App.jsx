@@ -8,6 +8,33 @@ import '../styles/App.scss';
 
 function App() {
 
+  const [allCountries, setAllCountries] = useState([]);
+
+  useEffect(()=> {
+    fetch ("https://restcountries.com/v3.1/all?fields=name,capital,flag,continents")
+    .then((response) => response.json())
+    .then((data) => {
+
+      setAllCountries(data)
+
+      });
+
+  }, []);
+
+  const renderAllCountries = () => {
+    return allCountries
+    .map((eachCountry, i) =>
+     (<li key={i}>
+    
+      <p>{eachCountry.flag}</p>
+      <h3>{eachCountry.name.official}</h3>
+      <p>{eachCountry.capital}</p>
+      <p>{eachCountry.continents[0]}</p>
+    </li>)
+    )
+
+  }
+
 
   return (
   <>
@@ -38,8 +65,7 @@ function App() {
 
     <section className='all-countries'>
       <ul className='all-countries-ul'>
-        AQUI VAN LOS PAISES
-      
+       {renderAllCountries()}
       </ul>
     </section>
   </main>
