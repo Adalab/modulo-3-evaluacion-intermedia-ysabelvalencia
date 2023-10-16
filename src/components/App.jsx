@@ -25,7 +25,17 @@ function App() {
     return allCountries
     .filter ((eachCountry)=>
     eachCountry.name.official.toLowerCase().includes(inputSearch.toLowerCase()))
-  
+
+    .filter((eachCountry) => {
+      if (selectSearch === "All") {
+        return true;
+      }else {
+        return eachCountry.continents[0] === selectSearch;
+      }
+    })
+    //este filter funciona pero elimina el renderizado y la funcionalidad del input by country. Lo dejo en commit pero no lo subiré al deploy
+
+    
     .map((eachCountry, i) =>
      (<li key={i}>
     
@@ -75,6 +85,9 @@ function App() {
           <select 
           name="select" 
           id="select"
+          value={selectSearch}
+          onChange={handleSelectSearch}
+
           >
           <option value="All">All</option>
           <option value="Africa">Africa</option>
